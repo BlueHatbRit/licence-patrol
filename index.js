@@ -22,11 +22,19 @@ module.exports = robot => {
     };
 
     const config = await context.config("licence-patrol.yaml", defaultConfig);
+    config.blacklist = config.blacklist || [];
+    config.whitelist = config.whitelist || [];
 
     // "unknown" is emitted if we can't find a licence, we'll **always** report
     // if we don't know the licence as it's the safest thing to do for the users.
-    config.blackList.push("unknown");
-    robot.log(config.blackList);
+    config.blacklist.push("unknown");
+    robot.log(config.blacklist);
+
+    // If they provide both a blacklist and whitelist, the whitelist wins and the
+    // blacklist is ignored.
+    if (config.whitelist && config.blacklist) {
+      delete config.blacklist;
+    }
 
     let alerts = [];
     const files = await context.github.pullRequests.getFiles(pr);
@@ -37,7 +45,7 @@ module.exports = robot => {
         const results = await npmChecker.check(
           file.filename,
           file.contents_url,
-          config.blackList
+          config
         );
         if (results.checks.length > 0) {
           alerts.push(results);
