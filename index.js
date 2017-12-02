@@ -1,7 +1,7 @@
 const npmChecker = require("./lib/npm");
 
 const defaultConfig = {
-  blackList: ["none", "unlicenced", "gpl"]
+  blackList: ["GPLv3", "GPL-3.0", "GPL 3", "unlicenced", "unlicensed"]
 };
 
 module.exports = robot => {
