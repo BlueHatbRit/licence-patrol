@@ -3,6 +3,9 @@
 The Licence Patrol watch your repositories Pull Requests and checks the licences
 of new packages added.
 
+Note: this is a conveniance tool and should be considered a helper, do not rely
+entirely on this to keep your codebase legally in order.
+
 ## Installation
 
 To install this on your repository, go to
