@@ -22,6 +22,17 @@ The configuration file may define two yaml arrays, a `whitelist` and
 Licence Patrol will also alert you of any modules where a licence cannot be
 found.
 
+### Defaults
+
+```yaml
+blacklist:
+    - GPLv3
+    - GPL-3.0
+    - GPL 3
+    - unlicenced
+    - unlicensed
+```
+
 ## Supported package managers
 
 * NPM (npm registry hosted modules only)
@@ -40,5 +51,5 @@ precious we want to take a moment explain why each is needed.
 * Read your code - People like to place their package manager declaration files
   all around the shop, as a result we need to ask for access to all your code as
   we can't predict the specific file location. All of our code is open source so
-  you can see what we read, if you still don't trust us then you can host this
-  yourself!
+  you can see what we read, if you still don't trust us then you can also always
+  self host.
