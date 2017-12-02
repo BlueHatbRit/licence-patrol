@@ -84,7 +84,9 @@ function createAlertMessage(alerts) {
     "you should consider changing them:\n\n";
 
   alerts.forEach(alrt => {
-    msg += `${alrt.package} - ${alrt.licence}`;
+    msg +=
+      `* [${alrt.package}](https://www.npmjs.com/package/${alrt.package}) ` +
+      `- ${alrt.licence.toUpperCase()}`;
   });
 
   return msg;
