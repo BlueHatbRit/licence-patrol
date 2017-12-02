@@ -8,6 +8,13 @@ module.exports = robot => {
   robot.log("Application started");
 
   robot.on("pull_request", async context => {
+    robot.log(
+      "PR recieved from: " +
+        context.payload.repository +
+        " id: " +
+        context.payload.number
+    );
+
     const pr = {
       owner: context.payload.repository.owner.login,
       repo: context.payload.repository.name,
@@ -19,12 +26,13 @@ module.exports = robot => {
     // "unknown" is emitted if we can't find a licence, we'll **always** report
     // if we don't know the licence as it's the safest thing to do for the users.
     config.blackList.push("unknown");
+    robot.log(config.blackList);
 
     let alerts = [];
     const files = await context.github.pullRequests.getFiles(pr);
     for (const file of files.data) {
       if (file.filename === "package.json") {
-        console.log("Checking licences for", file.filename);
+        robot.log(`Checking package ${file.filename} packages`);
 
         const results = await npmChecker.check(
           file.filename,
@@ -34,13 +42,15 @@ module.exports = robot => {
         if (results.checks.length > 0) {
           alerts.push(results);
         }
+      } else {
+        robot.log("No package changes to check");
       }
     }
 
     if (alerts.length > 0) {
-      for (const pkgMngAlerts of alerts) {
-        console.log("Commenting licence alerts for:", pkgMngAlerts.path);
+      robot.log("Issuing licence alerts:", alerts.length);
 
+      for (const pkgMngAlerts of alerts) {
         pr.body = createAlertMessage(pkgMngAlerts.checks);
         pr.commit_id = context.payload.pull_request.head.sha;
         pr.path = pkgMngAlerts.path;
@@ -49,6 +59,8 @@ module.exports = robot => {
         await context.github.pullRequests.createComment(pr);
       }
     } else {
+      robot.log("No alerts to issue");
+
       const issue = context.issue({
         body: "Your new package licences are all in order!"
       });
