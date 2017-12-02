@@ -1,0 +1,8 @@
+# Node things
+node_modules
+
+# As usual, never add keys to your repo
+*.pem
+
+# Dev
+.env

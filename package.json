@@ -1,0 +1,31 @@
+{
+  "name": "licence-patrol",
+  "version": "1.0.0",
+  "description": "",
+  "author": "Elliot Blackburn <elliot@lybrary.io>",
+  "license": "ISC",
+  "repository": "https://github.com/BlueHatbRit/licence-patrol.git",
+  "scripts": {
+    "start": "probot run ./index.js",
+    "test": "jest && standard"
+  },
+  "dependencies": {
+    "probot": "^3.0.0",
+    "request-promise": "^4.2.2",
+    "semver": "^5.4.1"
+  },
+  "devDependencies": {
+    "jest": "^21.2.1",
+    "localtunnel": "^1.8.2",
+    "standard": "^10.0.3"
+  },
+  "engines": {
+    "node": ">= 7.7.0",
+    "npm": ">= 4.0.0"
+  },
+  "standard": {
+    "env": [
+      "jest"
+    ]
+  }
+}
