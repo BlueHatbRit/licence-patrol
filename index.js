@@ -12,8 +12,15 @@ module.exports = robot => {
       "PR recieved from: " +
         context.payload.repository +
         " id: " +
-        context.payload.number
+        context.payload.number +
+        " action: " +
+        context.payload.action
     );
+
+    if (context.payload.action !== "opened") {
+      robot.log('Action not "open", doing nothing');
+      return;
+    }
 
     const pr = {
       owner: context.payload.repository.owner.login,
