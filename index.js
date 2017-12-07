@@ -44,6 +44,7 @@ module.exports = robot => {
     }
 
     let alerts = [];
+    let checksMade = false;
     const files = await context.github.pullRequests.getFiles(pr);
     for (const file of files.data) {
       if (file.filename === "package.json") {
@@ -57,12 +58,14 @@ module.exports = robot => {
         if (results.checks.length > 0) {
           alerts.push(results);
         }
+
+        checksMade = true;
       } else {
         robot.log("No package changes to check");
       }
     }
 
-    if (alerts.length > 0) {
+    if (checksMade && alerts.length > 0) {
       robot.log("Issuing licence alerts:", alerts.length);
 
       for (const pkgMngAlerts of alerts) {
@@ -73,7 +76,7 @@ module.exports = robot => {
 
         await context.github.pullRequests.createComment(pr);
       }
-    } else {
+    } else if (checksMade && alerts.length === 0) {
       robot.log("No alerts to issue");
 
       const issue = context.issue({
